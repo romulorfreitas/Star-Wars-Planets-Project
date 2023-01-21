@@ -10,7 +10,6 @@ function Table() {
   // console.log(data);
   return (
     <div>
-
       <label htmlFor="planetName">
         <input
           data-testid="name-filter"

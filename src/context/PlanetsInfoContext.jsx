@@ -5,6 +5,7 @@ import useFetch from '../hooks/useFetch';
 export const PlanetsInfoContext = createContext();
 
 function PlanetsInfoProvider({ children }) {
+  console.log(children);
   const { data, loading, error } = useFetch();
 
   if (error) {
@@ -26,7 +27,7 @@ function PlanetsInfoProvider({ children }) {
     </PlanetsInfoContext.Provider>
   );
 }
-PlanetsInfoContext.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+PlanetsInfoProvider.propTypes = {
+  children: PropTypes.object,
+}.isRequired;
 export default PlanetsInfoProvider;
