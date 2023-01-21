@@ -4,7 +4,6 @@ import useFetch from '../hooks/useFetch';
 
 export const PlanetsInfoContext = createContext();
 
-// eslint-disable-next-line react/prop-types
 function PlanetsInfoProvider({ children }) {
   const { data, loading, error } = useFetch();
 

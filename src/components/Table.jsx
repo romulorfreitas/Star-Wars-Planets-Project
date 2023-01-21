@@ -1,12 +1,27 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { PlanetsInfoContext } from '../context/PlanetsInfoContext';
 
 function Table() {
   const { data } = useContext(PlanetsInfoContext);
+  const [search, setSearch] = useState('');
+
+  const filteredPLanets = data.filter((planet) => planet.name.includes(search));
   // console.log(data);
   return (
     <div>
+
+      <label htmlFor="planetName">
+        <input
+          data-testid="name-filter"
+          type="text"
+          name="planetName"
+          placeholder="search for planets"
+          onChange={ (e) => setSearch(e.target.value) }
+          value={ search }
+        />
+      </label>
+
       <table>
         <thead>
           <tr>
@@ -27,7 +42,7 @@ function Table() {
         </thead>
         <tbody>
           {
-            data.map((e) => (
+            filteredPLanets.map((e) => (
               <tr key={ e.name }>
                 <td>{e.name}</td>
                 <td>{e.rotation_period}</td>

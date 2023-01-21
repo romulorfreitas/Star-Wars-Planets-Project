@@ -11,7 +11,7 @@ export default function useFetch() {
     fetch(url)
       .then((response) => response.json())
       .then(({ results }) => {
-        results.map((e) => delete e.residentes);
+        results.map((e) => delete e.residents);
         setData(results);
         setLoading(false);
         // console.log(results);
