@@ -5,7 +5,7 @@ import useFetch from '../hooks/useFetch';
 export const PlanetsInfoContext = createContext();
 
 function PlanetsInfoProvider({ children }) {
-  console.log(children);
+  // console.log(children);
   const { data, loading, error } = useFetch();
 
   if (error) {
