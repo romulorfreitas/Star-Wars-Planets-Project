@@ -2,9 +2,16 @@ import React, { useContext, useState } from 'react';
 import { PlanetsInfoContext } from '../context/PlanetsInfoContext';
 
 function Table() {
-  const { data } = useContext(PlanetsInfoContext);
+  const { data, columnKeys } = useContext(PlanetsInfoContext);
   const [search, setSearch] = useState([]);
-  const [column, setColumn] = useState('population');
+  const [columnOption, setColumnOption] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
+  const [column, setColumn] = useState(columnOption[0]);
   const [compare, setCompare] = useState('maior que');
   const [number, setnumber] = useState(0);
   const [savedComparison, setSavedComparison] = useState([]);
@@ -43,6 +50,14 @@ function Table() {
     );
   });
 
+  const saveAndRemove = () => {
+    setSavedComparison([...savedComparison,
+      { compare, number, column }]);
+    const removeFilter = columnOption.filter((e) => e !== column);
+    setColumn(removeFilter[0]);
+    setColumnOption(removeFilter);
+  };
+
   return (
     <div>
       <label htmlFor="name-filter">
@@ -73,11 +88,9 @@ function Table() {
           value={ column }
           onChange={ ({ target: { value } }) => setColumn(value) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {
+            columnOption.map((e, index) => (<option key={ index }>{ e }</option>))
+          }
         </select>
       </label>
       <br />
@@ -110,8 +123,7 @@ function Table() {
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ () => setSavedComparison([...savedComparison,
-          { compare, number, column }]) }
+        onClick={ saveAndRemove }
       >
         Filter
       </button>
@@ -121,19 +133,9 @@ function Table() {
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Rotation Period</th>
-            <th>Orbital Period</th>
-            <th>Diameter</th>
-            <th>Climate</th>
-            <th>Gravity</th>
-            <th>Terrain</th>
-            <th>Surface Water</th>
-            <th>Population</th>
-            <th>Films</th>
-            <th>Created</th>
-            <th>Edited</th>
-            <th>URL</th>
+            {
+              columnKeys.map((e, index) => (<th key={ index }>{ e }</th>))
+            }
           </tr>
         </thead>
         <tbody>

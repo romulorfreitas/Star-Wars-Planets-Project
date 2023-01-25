@@ -6,7 +6,7 @@ export const PlanetsInfoContext = createContext();
 
 function PlanetsInfoProvider({ children }) {
   // console.log(children);
-  const { data, loading, error } = useFetch();
+  const { data, loading, columnKeys, error } = useFetch();
 
   if (error) {
     return (
@@ -19,6 +19,7 @@ function PlanetsInfoProvider({ children }) {
   const contextValue = {
     loading,
     data,
+    columnKeys,
   };
 
   return (
