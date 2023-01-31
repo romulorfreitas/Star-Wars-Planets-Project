@@ -1,16 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { PlanetsInfoContext } from '../context/PlanetsInfoContext';
 
+const options = [
+  'population',
+  'orbital_period',
+  'diameter',
+  'rotation_period',
+  'surface_water',
+];
+
 function Table() {
   const { data, columnKeys } = useContext(PlanetsInfoContext);
   const [search, setSearch] = useState([]);
-  const [columnOption, setColumnOption] = useState([
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ]);
+  const [columnOption, setColumnOption] = useState(options);
   const [column, setColumn] = useState(columnOption[0]);
   const [compare, setCompare] = useState('maior que');
   const [number, setnumber] = useState(0);
@@ -39,6 +41,12 @@ function Table() {
   const filteredPLanets = comparisonPLanets
     .filter((planet) => planet.name.toLowerCase().includes(search));
 
+  const removeFilter = (e) => {
+    const a = savedComparison.filter((t) => t !== e);
+    setSavedComparison(a);
+    setColumnOption([...columnOption, e.column]);
+  };
+
   const selectedFilter = savedComparison.map((saved, index) => {
     const {
       column: receivedColumn,
@@ -46,20 +54,28 @@ function Table() {
       number: receivedValue } = saved;
     const renderSaved = `${receivedColumn} ${receivedCompare} ${receivedValue}`;
     return (
-      <li key={ index }>{ renderSaved }</li>
+      <div key={ index }>
+        <li data-testid="filter">
+          {renderSaved}
+          <br />
+          <button onClick={ () => removeFilter(saved) }>X</button>
+        </li>
+      </div>
     );
   });
 
   const saveAndRemove = () => {
     setSavedComparison([...savedComparison,
       { compare, number, column }]);
-    const removeFilter = columnOption.filter((e) => e !== column);
-    setColumn(removeFilter[0]);
-    setColumnOption(removeFilter);
+    const removeFilte = columnOption.filter((e) => e !== column);
+    setColumn(removeFilte[0]);
+    setColumnOption(removeFilte);
   };
 
   return (
     <div>
+      <h1>STAR WARS PLANET FINDER</h1>
+      <br />
       <label htmlFor="name-filter">
         What planet are you looking for?
         <br />
@@ -129,7 +145,12 @@ function Table() {
       </button>
 
       <ul>{ selectedFilter }</ul>
-
+      <button
+        data-testid="button-remove-filters"
+        onClick={ () => setSavedComparison([]) || setColumnOption(options) }
+      >
+        CLEAR ALL
+      </button>
       <table>
         <thead>
           <tr>
